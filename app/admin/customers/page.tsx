@@ -25,8 +25,8 @@ interface Customer {
 const mockCustomers: Customer[] = [
   {
     id: "CUST001",
-    name: "John Doe",
-    email: "john@example.com",
+    name: "Tanya",
+    email: "tanya@rod.com",
     phone: "+91 98765 43210",
     address: "123 Main St, Mumbai, Maharashtra 400001",
     joinDate: "2023-06-15",
@@ -37,8 +37,8 @@ const mockCustomers: Customer[] = [
   },
   {
     id: "CUST002",
-    name: "Jane Smith",
-    email: "jane@example.com",
+    name: "Riya",
+    email: "riya@rat.com",
     phone: "+91 98765 43211",
     address: "456 Oak Ave, Delhi, Delhi 110001",
     joinDate: "2023-08-22",
@@ -49,8 +49,8 @@ const mockCustomers: Customer[] = [
   },
   {
     id: "CUST003",
-    name: "Mike Johnson",
-    email: "mike@example.com",
+    name: "Bhoomi",
+    email: "bhu@sak.com",
     phone: "+91 98765 43212",
     address: "789 Pine Rd, Bangalore, Karnataka 560001",
     joinDate: "2023-04-10",
@@ -61,8 +61,8 @@ const mockCustomers: Customer[] = [
   },
   {
     id: "CUST004",
-    name: "Sarah Wilson",
-    email: "sarah@example.com",
+    name: "Ayush",
+    email: "ayu@shu.com",
     phone: "+91 98765 43213",
     address: "321 Elm St, Chennai, Tamil Nadu 600001",
     joinDate: "2023-09-05",
@@ -73,8 +73,8 @@ const mockCustomers: Customer[] = [
   },
   {
     id: "CUST005",
-    name: "David Brown",
-    email: "david@example.com",
+    name: "KUshagra",
+    email: "kush@sa.com",
     phone: "+91 98765 43214",
     address: "654 Maple Dr, Pune, Maharashtra 411001",
     joinDate: "2023-07-18",
@@ -131,7 +131,7 @@ export default function AdminCustomersPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg gradient-primary">
           <Users className="h-6 w-6 text-white" />
@@ -144,7 +144,6 @@ export default function AdminCustomersPage() {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="glass-card border-0">
           <CardContent className="p-6">
@@ -195,7 +194,6 @@ export default function AdminCustomersPage() {
         </Card>
       </div>
 
-      {/* Search */}
       <Card className="glass-card border-0">
         <CardContent className="p-6">
           <div className="relative max-w-md">
@@ -210,7 +208,6 @@ export default function AdminCustomersPage() {
         </CardContent>
       </Card>
 
-      {/* Customers List */}
       <Card className="glass-card border-0">
         <CardHeader>
           <CardTitle>Customers ({filteredCustomers.length})</CardTitle>
@@ -264,7 +261,6 @@ export default function AdminCustomersPage() {
         </CardContent>
       </Card>
 
-      {/* Customer Details Dialog */}
       <Dialog open={showCustomerDialog} onOpenChange={setShowCustomerDialog}>
         <DialogContent className="glass-card border-0 max-w-2xl">
           <DialogHeader>
@@ -273,7 +269,7 @@ export default function AdminCustomersPage() {
 
           {selectedCustomer && (
             <div className="space-y-6">
-              {/* Customer Header */}
+              
               <div className="flex items-center gap-4">
                 <Avatar className="h-16 w-16">
                   <AvatarFallback className="bg-primary text-primary-foreground text-xl">
@@ -293,7 +289,6 @@ export default function AdminCustomersPage() {
                 </div>
               </div>
 
-              {/* Contact Information */}
               <div className="space-y-4">
                 <h3 className="font-semibold">Contact Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -321,7 +316,6 @@ export default function AdminCustomersPage() {
                 </div>
               </div>
 
-              {/* Order Statistics */}
               <div className="space-y-4">
                 <h3 className="font-semibold">Order Statistics</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -346,7 +340,6 @@ export default function AdminCustomersPage() {
                 </div>
               </div>
 
-              {/* Account Information */}
               <div className="space-y-4">
                 <h3 className="font-semibold">Account Information</h3>
                 <div className="flex items-center gap-3">
@@ -358,7 +351,6 @@ export default function AdminCustomersPage() {
                 </div>
               </div>
 
-              {/* Actions */}
               <div className="flex justify-end gap-3">
                 <Button variant="outline" className="glass border-white/20 bg-transparent">
                   View Orders

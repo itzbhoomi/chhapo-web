@@ -18,7 +18,7 @@ import {
 } from "recharts"
 import { TrendingUp, DollarSign, Users, Package, Target } from "lucide-react"
 
-// Mock data for analytics
+
 const revenueData = [
   { month: "Jan", revenue: 45000, orders: 120, customers: 89 },
   { month: "Feb", revenue: 52000, orders: 140, customers: 95 },
@@ -63,7 +63,6 @@ const customerGrowthData = [
 export default function AdminAnalyticsPage() {
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg gradient-primary">
@@ -89,7 +88,6 @@ export default function AdminAnalyticsPage() {
         </Select>
       </div>
 
-      {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="glass-card border-0">
           <CardContent className="p-6">
@@ -152,7 +150,6 @@ export default function AdminAnalyticsPage() {
         </Card>
       </div>
 
-      {/* Revenue and Orders Trend */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="glass-card border-0">
           <CardHeader>
@@ -189,7 +186,6 @@ export default function AdminAnalyticsPage() {
         </Card>
       </div>
 
-      {/* Service Distribution and Daily Performance */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="glass-card border-0">
           <CardHeader>
