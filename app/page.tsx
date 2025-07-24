@@ -1,103 +1,126 @@
-import Image from "next/image";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Printer, CreditCard, FileText, Gift, Package, Star } from "lucide-react"
+import Link from "next/link"
 
-export default function Home() {
+const services = [
+  {
+    title: "Basic Print",
+    description: "Upload your documents and get them printed with various options",
+    icon: Printer,
+    href: "/print",
+    features: ["Multiple paper types", "Color & B/W options", "Binding services", "Lamination"],
+  },
+  {
+    title: "Gift Cards",
+    description: "Create personalized gift cards with our beautiful templates",
+    icon: Gift,
+    href: "/giftcard",
+    features: ["Ready templates", "Custom messages", "High-quality print", "Fast delivery"],
+  },
+  {
+    title: "Business Cards",
+    description: "Professional business cards printed to perfection",
+    icon: CreditCard,
+    href: "/business-card",
+    features: ["Custom designs", "Multiple sizes", "Premium paper", "Bulk discounts"],
+  },
+  {
+    title: "Brochures",
+    description: "Eye-catching brochures for your business needs",
+    icon: FileText,
+    href: "/brochure",
+    features: ["Various templates", "Different sizes", "Paper options", "Professional finish"],
+  },
+]
+
+export default function HomePage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="space-y-8">
+      <div className="text-center space-y-4 py-12">
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+          Welcome to Chhapo
+        </h1>
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          Your one-stop solution for all printing needs. From basic documents to custom gift cards, we deliver quality
+          prints right to your doorstep.
+        </p>
+        
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {services.map((service) => (
+          <Card key={service.title} className="glass-card border-0 shadow-xl">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg gradient-primary">
+                  <service.icon className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <CardTitle>{service.title}</CardTitle>
+                  <CardDescription>{service.description}</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <ul className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
+                {service.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 bg-primary rounded-full" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <Button asChild className="w-full">
+                <Link href={service.href}>Get Started</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <Card className="gradient-primary border-0 glass-card">
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <Package className="h-8 w-8" />
+            <div>
+              <CardTitle>Need Bulk Orders?</CardTitle>
+              <CardDescription>
+                Contact us for special pricing on large quantity orders
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <Button asChild variant="secondary" className="bg-black hover:bg-white hover:text-black">
+            <Link href="/bulk-order" className="text-white">Request Bulk Quote</Link>
+          </Button>
+        </CardContent>
+      </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-8">
+        <div className="text-center space-y-2">
+          <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+            <Printer className="h-6 w-6 text-primary" />
+          </div>
+          <h3 className="font-semibold">High Quality Prints</h3>
+          <p className="text-sm text-muted-foreground">Professional grade printing with premium materials</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="text-center space-y-2">
+          <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+            <Package className="h-6 w-6 text-primary" />
+          </div>
+          <h3 className="font-semibold">Fast Delivery</h3>
+          <p className="text-sm text-muted-foreground">Quick turnaround times with reliable delivery</p>
+        </div>
+        <div className="text-center space-y-2">
+          <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+            <Star className="h-6 w-6 text-primary" />
+          </div>
+          <h3 className="font-semibold">Customer Satisfaction</h3>
+          <p className="text-sm text-muted-foreground">100% satisfaction guarantee on all orders</p>
+        </div>
+      </div>
     </div>
-  );
+  )
 }

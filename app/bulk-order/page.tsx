@@ -23,7 +23,6 @@ export default function BulkOrderPage() {
       return
     }
 
-    // Simulate form submission
     console.log({ fullName, email, phone, message, agreedToTerms })
     toast.success('Bulk order request submitted successfully!')
   }
@@ -32,7 +31,7 @@ export default function BulkOrderPage() {
     <div className="max-w-2xl mx-auto py-12 px-4">
       <h1 className="text-3xl font-bold mb-6 text-center">Bulk Order Request</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Full Name */}
+
         <div>
           <Label htmlFor="fullName">Full Name</Label>
           <Input
@@ -44,7 +43,6 @@ export default function BulkOrderPage() {
           />
         </div>
 
-        {/* Email */}
         <div>
           <Label htmlFor="email">Email</Label>
           <Input
@@ -56,7 +54,6 @@ export default function BulkOrderPage() {
           />
         </div>
 
-        {/* Phone */}
         <div>
           <Label htmlFor="phone">Phone</Label>
           <Input
@@ -68,7 +65,6 @@ export default function BulkOrderPage() {
           />
         </div>
 
-        {/* Message */}
         <div>
           <Label htmlFor="message">Additional Details</Label>
           <Textarea
@@ -81,7 +77,6 @@ export default function BulkOrderPage() {
           />
         </div>
 
-        {/* Terms Checkbox */}
         <div className="flex items-center space-x-2">
           <Checkbox
             id="terms"
@@ -95,7 +90,6 @@ export default function BulkOrderPage() {
           </Label>
         </div>
 
-        {/* Submit Button */}
         <Button type="submit" className="w-full">
           Submit Request
         </Button>

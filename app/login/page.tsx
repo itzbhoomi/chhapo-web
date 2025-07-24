@@ -18,7 +18,6 @@ export default function LoginPage() {
     email: "",
     password: "",
     name: "",
-    phone: "",
     confirmPassword: "",
   })
   const [isLoading, setIsLoading] = useState(false)
@@ -40,7 +39,7 @@ export default function LoginPage() {
     }
 
     if (!isLogin) {
-      if (!formData.name || !formData.phone) {
+      if (!formData.name) {
         toast.error("Please fill in all required fields")
         setIsLoading(false)
         return
@@ -53,20 +52,31 @@ export default function LoginPage() {
       }
     }
 
-    setTimeout(() => {
-      const userData = {
-        email: formData.email,
-        name: formData.name || "User",
-        phone: formData.phone,
-        loginTime: new Date().toISOString(),
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          name: formData.name,
+          isLogin,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || "Something went wrong")
       }
-      localStorage.setItem("user", JSON.stringify(userData))
 
-      toast.success(isLogin ? "Login Successful!" : "Account Created!")
-
+      localStorage.setItem("user", JSON.stringify(data.user))
+      toast.success(data.message)
       router.push("/")
+    } catch (err: any) {
+      toast.error(err.message)
+    } finally {
       setIsLoading(false)
-    }, 1500)
+    }
   }
 
   const toggleMode = () => {
@@ -75,7 +85,6 @@ export default function LoginPage() {
       email: "",
       password: "",
       name: "",
-      phone: "",
       confirmPassword: "",
     })
   }
@@ -90,7 +99,7 @@ export default function LoginPage() {
             </div>
           </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-            PrintSprint
+            Chhapo
           </h1>
           <p className="text-muted-foreground mt-2">
             {isLogin ? "Welcome back! Sign in to your account" : "Create your PrintSprint account"}
@@ -135,22 +144,21 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {!isLogin && (
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="Enter your phone number"
-                      value={formData.phone}
-                      onChange={(e) => handleInputChange("phone", e.target.value)}
-                      className="pl-10 glass border-white/20"
-                    />
-                  </div>
-                </div>
-              )}
+              <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <div className="relative">
+                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Enter your name"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
+                  className="pl-10 glass border-white/20"
+                />
+              </div>
+            </div>
+
 
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
