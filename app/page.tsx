@@ -38,7 +38,7 @@ export default function HomePage() {
   return (
     <div className="space-y-8">
       <div className="text-center space-y-4 py-12">
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-violet-900 via-purple-600 to-blue-900 bg-clip-text text-transparent">
           Welcome to Chhapo
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

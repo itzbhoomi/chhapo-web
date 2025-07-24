@@ -1,4 +1,4 @@
-import { Printer, CreditCard, FileText, Gift, Package, Home, History, User } from "lucide-react"
+import { Printer, CreditCard, FileText, Gift, Package, Home, History, User, Shield } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -46,13 +46,18 @@ const menuItems = [
   },
   {
     title: "Order History",
-    url: "/historys",
+    url: "/history",
     icon: History,
   },
   {
     title: "Login",
     url: "/login",
     icon: User,
+  },
+  {
+    title: "Admin Panel",
+    url: "/admin",
+    icon: Shield,
   },
 ]
 
@@ -62,7 +67,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-4 border-b border-white/20">
         <div className="flex items-center gap-2">
           <Printer className="h-6 w-6 text-primary" />
-          <span className="text-xl font-bold">Chhapo</span>
+          <span className="text-xl font-bold">PrintSprint</span>
         </div>
       </SidebarHeader>
       <SidebarContent>

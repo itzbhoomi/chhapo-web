@@ -34,9 +34,9 @@ export default function GiftCardPage() {
   const prices = {
     birthday: 30,
     love: 40,
-    anniversary: 35,
+    black: 35,
     congratulations: 25,
-    festival: 20,
+    blue: 20,
   }
 
   const deliveryCharge = 50
@@ -51,7 +51,7 @@ export default function GiftCardPage() {
   }, [])
 
   const getTotalPrice = () => {
-    const base = prices[occasion] || 0
+    const base = prices[occasion] || 50
     const cardTotal = base * parseInt(quantity || "0")
     return cardTotal + deliveryCharge
   }
