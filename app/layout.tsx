@@ -10,7 +10,7 @@ import { Toaster } from "sonner"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Chhapo - Professional Printing Services",
+  title: "Chhapo - Print to impress. Delivered by express",
   description: "Custom printing solutions for all your needs",
   icons: {
     icon: "/logo.jpg", 

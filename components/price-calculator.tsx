@@ -20,7 +20,6 @@ export function PriceCalculator({
   lamination,
   quantity = 1,
 }: PriceCalculatorProps) {
-  const deliveryCharge = 50
 
   const calculatePrice = () => {
     let basePrice = 0
@@ -46,7 +45,7 @@ export function PriceCalculator({
       totalPrice += 30
     }
 
-    return totalPrice * quantity + deliveryCharge
+    return totalPrice * quantity 
   }
 
   const getBreakdown = () => {
@@ -82,7 +81,7 @@ export function PriceCalculator({
 
   const breakdown = getBreakdown()
   const subtotal = breakdown.reduce((sum, item) => sum + item.amount, 0)
-  const total = subtotal * quantity + deliveryCharge
+  const total = subtotal * quantity 
 
   return (
     <Card className="glass-card border-0">
@@ -114,11 +113,7 @@ export function PriceCalculator({
           </>
         )}
 
-        <div className="flex justify-between items-center">
-          <p className="font-medium">Delivery Charge</p>
-          <p className="font-medium">₹{deliveryCharge}</p>
-        </div>
-
+      
         <Separator />
         <div className="flex justify-between items-center text-lg font-bold">
           <p>Total</p>

@@ -42,6 +42,7 @@ export default function HomePage() {
           Welcome to Chhapo
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          Print to impress. Delivered by express!</p><p>
           Your one-stop solution for all printing needs. From basic documents to custom gift cards, we deliver quality
           prints right to your doorstep.
         </p>
@@ -54,7 +55,7 @@ export default function HomePage() {
             <CardHeader>
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-lg gradient-primary">
-                  <service.icon className="h-6 w-6 text-white" />
+                  <service.icon className="h-8 w-9 text-violet-800" />
                 </div>
                 <div>
                   <CardTitle>{service.title}</CardTitle>

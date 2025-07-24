@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -12,8 +12,9 @@ import { FileUpload } from "@/components/file-upload"
 import { PriceCalculator } from "@/components/price-calculator"
 import { OrderSuccessDialog } from "@/components/order-success-dialog"
 import { TrackOrderDialog } from "@/components/track-order-dialog"
-import { Printer, Eye } from "lucide-react"
+import { Printer, Eye, Wallet } from "lucide-react"
 import { DocumentPreview } from "@/components/document-preview"
+import { toast } from "sonner"
 
 export default function PrintPage() {
   const [file, setFile] = useState<File | null>(null)
@@ -31,8 +32,22 @@ export default function PrintPage() {
   const [showTrackDialog, setShowTrackDialog] = useState(false)
   const [orderId, setOrderId] = useState("")
 
+  const [walletBalance, setWalletBalance] = useState(1000)
+
+  const DELIVERY_CHARGE = 50
+
+  useEffect(() => {
+    const stored = localStorage.getItem("walletBalance")
+    if (stored) {
+      setWalletBalance(parseInt(stored))
+    } else {
+      localStorage.setItem("walletBalance", "1000")
+    }
+  }, [])
+
   const calculatePrice = () => {
     let basePrice = 0
+
     if (paperType === "normal") {
       basePrice = color === "bw" ? 5 : 10
     } else {
@@ -51,22 +66,40 @@ export default function PrintPage() {
       totalPrice += 30
     }
 
-    return totalPrice * quantity
+    totalPrice = totalPrice * quantity + DELIVERY_CHARGE
+
+    return totalPrice
   }
 
   const handleSubmit = () => {
-    if (!file) {
+    if (!file) return
+
+    const price = calculatePrice()
+
+    if (walletBalance < price) {
+      toast.error("Insufficient wallet balance. Please reduce your order or recharge.")
       return
     }
+
+    const newBalance = walletBalance - price
+    localStorage.setItem("walletBalance", newBalance.toString())
+    setWalletBalance(newBalance)
 
     const newOrderId = `PS${Date.now().toString().slice(-6)}`
     setOrderId(newOrderId)
     setShowSuccessDialog(true)
+    toast.success(`₹${price} deducted from wallet. Order placed!`)
   }
 
   const handleTrackOrder = () => {
     setShowSuccessDialog(false)
     setShowTrackDialog(true)
+  }
+
+  const handleResetWallet = () => {
+    localStorage.setItem("walletBalance", "1000")
+    setWalletBalance(1000)
+    toast.success("Wallet reset to ₹1000")
   }
 
   return (
@@ -83,9 +116,26 @@ export default function PrintPage() {
         </div>
       </div>
 
+      <Card className="glass-card border-0">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Wallet className="w-5 h-5" />
+            Wallet Balance: ₹{walletBalance}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Button
+            variant="ghost"
+            className="text-sm underline text-blue-500 hover:text-blue-700 p-0 mt-2"
+            onClick={handleResetWallet}
+          >
+            Reset Wallet Balance
+          </Button>
+        </CardContent>
+      </Card>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          
           <Card className="glass-card border-0">
             <CardHeader>
               <CardTitle>Upload Document</CardTitle>
@@ -126,7 +176,6 @@ export default function PrintPage() {
                     className="glass border-white/20"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="quantity">Quantity</Label>
                   <Input
@@ -142,10 +191,7 @@ export default function PrintPage() {
 
               <div className="space-y-3">
                 <Label>Orientation</Label>
-                <RadioGroup
-                  value={orientation}
-                  onValueChange={(value: "portrait" | "landscape") => setOrientation(value)}
-                >
+                <RadioGroup value={orientation} onValueChange={(v) => setOrientation(v)}>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="portrait" id="portrait" />
                     <Label htmlFor="portrait">Portrait</Label>
@@ -159,35 +205,35 @@ export default function PrintPage() {
 
               <div className="space-y-3">
                 <Label>Paper Type</Label>
-                <RadioGroup value={paperType} onValueChange={(value: "normal" | "glossy") => setPaperType(value)}>
+                <RadioGroup value={paperType} onValueChange={(v) => setPaperType(v)}>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="normal" id="normal" />
                     <Label htmlFor="normal">Normal</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="glossy" id="glossy" />
-                    <Label htmlFor="glossy">Glossy (+₹5 per page)</Label>
+                    <Label htmlFor="glossy">Glossy (+₹5/page)</Label>
                   </div>
                 </RadioGroup>
               </div>
 
               <div className="space-y-3">
                 <Label>Color</Label>
-                <RadioGroup value={color} onValueChange={(value: "bw" | "color") => setColor(value)}>
+                <RadioGroup value={color} onValueChange={(v) => setColor(v)}>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="bw" id="bw" />
                     <Label htmlFor="bw">Black & White</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="color" id="color" />
-                    <Label htmlFor="color">Color (+₹5 per page)</Label>
+                    <Label htmlFor="color">Color (+₹5/page)</Label>
                   </div>
                 </RadioGroup>
               </div>
 
               <div className="space-y-3">
                 <Label>Print Sides</Label>
-                <RadioGroup value={sides} onValueChange={(value: "front" | "both") => setSides(value)}>
+                <RadioGroup value={sides} onValueChange={(v) => setSides(v)}>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="front" id="front" />
                     <Label htmlFor="front">Front Only</Label>
@@ -201,7 +247,7 @@ export default function PrintPage() {
 
               <div className="space-y-3">
                 <Label>Binding</Label>
-                <Select value={binding} onValueChange={(value: "none" | "stapled" | "spiral") => setBinding(value)}>
+                <Select value={binding} onValueChange={(v) => setBinding(v)}>
                   <SelectTrigger className="glass border-white/20">
                     <SelectValue />
                   </SelectTrigger>
@@ -231,6 +277,7 @@ export default function PrintPage() {
               lamination={lamination}
               quantity={quantity}
             />
+            <div className="text-sm px-4 pb-2 text-muted-foreground">+ ₹{DELIVERY_CHARGE} delivery included</div>
           </div>
 
           <Button

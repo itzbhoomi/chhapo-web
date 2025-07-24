@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -13,40 +13,97 @@ import {
 } from "@/components/ui/select"
 import { FileUpload } from "@/components/file-upload"
 import { toast } from "sonner"
-import { CreditCard } from "lucide-react"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import { CreditCard, Wallet } from "lucide-react"
+import { OrderSuccessDialog } from "@/components/order-success-dialog"
+import { TrackOrderDialog } from "@/components/track-order-dialog"
 
 export default function BusinessCardPage() {
   const [file, setFile] = useState<File | null>(null)
   const [size, setSize] = useState<string>("")
   const [quantity, setQuantity] = useState<string>("")
-  const [open, setOpen] = useState(false)
   const [orderId, setOrderId] = useState("")
+  const [walletBalance, setWalletBalance] = useState(1000)
+
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+  const [showTrackDialog, setShowTrackDialog] = useState(false)
+
+  const DELIVERY_CHARGE = 50
+
+  const sizePrices = {
+    standard: 2,
+    square: 2.5,
+    mini: 1.5,
+  }
+
+  useEffect(() => {
+    const stored = localStorage.getItem("walletBalance")
+    if (stored) {
+      setWalletBalance(parseInt(stored))
+    } else {
+      localStorage.setItem("walletBalance", "1000")
+    }
+  }, [])
+
+  const getTotalPrice = () => {
+    const base = sizePrices[size as keyof typeof sizePrices] || 0
+    const total = base * parseInt(quantity || "0")
+    return Math.round(total + DELIVERY_CHARGE)
+  }
 
   const handleSubmit = () => {
-    if (!file) {
-      toast.error("Please upload your business card design")
+    if (!file || !size || !quantity) {
+      toast.error("Please fill all fields and upload your business card design")
       return
     }
 
-    const newOrderId =
-      Math.random().toString(36).substring(2, 15) +
-      Math.random().toString(36).substring(2, 15)
+    const price = getTotalPrice()
 
+    if (walletBalance < price) {
+      toast.error("Insufficient wallet balance. Please reduce quantity or recharge.")
+      return
+    }
+
+    const newBalance = walletBalance - price
+    localStorage.setItem("walletBalance", newBalance.toString())
+    setWalletBalance(newBalance)
+
+    const newOrderId = `BC${Date.now().toString().slice(-6)}`
     setOrderId(newOrderId)
-    setOpen(true)
+    setShowSuccessDialog(true)
+    toast.success(`₹${price} deducted from wallet. Order placed!`)
+  }
+
+  const handleResetWallet = () => {
+    localStorage.setItem("walletBalance", "1000")
+    setWalletBalance(1000)
+    toast.success("Wallet reset to ₹1000")
+  }
+
+  const handleTrackOrder = () => {
+    setShowSuccessDialog(false)
+    setShowTrackDialog(true)
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-10">
+    <div className="max-w-2xl mx-auto mt-10 space-y-6">
+      <Card className="glass-card border-0">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Wallet className="h-5 w-5" />
+            Wallet Balance: ₹{walletBalance}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Button
+            variant="ghost"
+            className="text-sm underline text-blue-500 hover:text-blue-700 p-0 mt-2"
+            onClick={handleResetWallet}
+          >
+            Reset Wallet Balance
+          </Button>
+        </CardContent>
+      </Card>
+
       <Card className="border-green-200 bg-green-50 dark:bg-white/5 dark:border-white/10">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
@@ -62,9 +119,9 @@ export default function BusinessCardPage() {
                 <SelectValue placeholder="Choose size" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="standard">Standard (3.5" x 2")</SelectItem>
-                <SelectItem value="square">Square (2.5" x 2.5")</SelectItem>
-                <SelectItem value="mini">Mini (2.75" x 1.10")</SelectItem>
+                <SelectItem value="standard">Standard (3.5" x 2") – ₹2/card</SelectItem>
+                <SelectItem value="square">Square (2.5" x 2.5") – ₹2.5/card</SelectItem>
+                <SelectItem value="mini">Mini (2.75" x 1.10") – ₹1.5/card</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -89,32 +146,35 @@ export default function BusinessCardPage() {
             </Select>
           </div>
 
+          {size && quantity && (
+            <div className="text-sm text-muted-foreground">
+              <p>Card Cost: ₹{(sizePrices[size as keyof typeof sizePrices] || 0) * parseInt(quantity)}</p>
+              <p>Delivery Charge: ₹{DELIVERY_CHARGE}</p>
+              <p className="font-semibold text-green-600">Total: ₹{getTotalPrice()}</p>
+            </div>
+          )}
+
           <Button onClick={handleSubmit} className="w-full">
             Submit Order
           </Button>
         </CardContent>
       </Card>
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Order Submitted</DialogTitle>
-            <DialogDescription>
-              Your business card order has been successfully placed!
-            </DialogDescription>
-          </DialogHeader>
-          <div className="text-sm text-muted-foreground">
-            Order ID: <span className="font-mono">{orderId}</span>
-          </div>
-          <DialogFooter className="mt-4">
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Close
-              </Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <OrderSuccessDialog
+        isOpen={showSuccessDialog}
+        onClose={() => setShowSuccessDialog(false)}
+        onTrackOrder={handleTrackOrder}
+        orderId={orderId}
+        orderType="Business Card"
+        totalAmount={getTotalPrice()}
+      />
+
+      <TrackOrderDialog
+        isOpen={showTrackDialog}
+        onClose={() => setShowTrackDialog(false)}
+        orderId={orderId}
+        orderType="Business Card"
+      />
     </div>
   )
 }
