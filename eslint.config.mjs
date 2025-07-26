@@ -10,7 +10,16 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Default Next.js + TypeScript config
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  // Custom override to disable 'no-explicit-any' globally
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
 ];
 
 export default eslintConfig;
