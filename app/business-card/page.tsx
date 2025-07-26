@@ -119,9 +119,9 @@ export default function BusinessCardPage() {
                 <SelectValue placeholder="Choose size" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="standard">Standard (3.5" x 2") – ₹2/card</SelectItem>
-                <SelectItem value="square">Square (2.5" x 2.5") – ₹2.5/card</SelectItem>
-                <SelectItem value="mini">Mini (2.75" x 1.10") – ₹1.5/card</SelectItem>
+                <SelectItem value="standard">Standard (3.5&nbsp;&quot;x&quot;&nbsp;2&quot;) – ₹2/card</SelectItem>
+                <SelectItem value="square">Square (2.5&nbsp;&quot;x&quot;&nbsp;2.5&quot;) – ₹2.5/card</SelectItem>
+                <SelectItem value="mini">Mini (2.75&nbsp;&quot;x&quot;&nbsp;1.10&quot;) – ₹1.5/card</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -148,9 +148,15 @@ export default function BusinessCardPage() {
 
           {size && quantity && (
             <div className="text-sm text-muted-foreground">
-              <p>Card Cost: ₹{(sizePrices[size as keyof typeof sizePrices] || 0) * parseInt(quantity)}</p>
+              <p>
+                Card Cost: ₹
+                {(sizePrices[size as keyof typeof sizePrices] || 0) *
+                  parseInt(quantity)}
+              </p>
               <p>Delivery Charge: ₹{DELIVERY_CHARGE}</p>
-              <p className="font-semibold text-green-600">Total: ₹{getTotalPrice()}</p>
+              <p className="font-semibold text-green-600">
+                Total: ₹{getTotalPrice()}
+              </p>
             </div>
           )}
 
