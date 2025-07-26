@@ -168,7 +168,7 @@ export default function GiftCardPage() {
           </div>
 
           <div className="space-y-2">
-            <Label>Recipient Name</Label>
+            <Label>Custom message you want on card</Label>
             <Input
               placeholder="Enter name to display on card"
               value={name}

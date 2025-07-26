@@ -67,7 +67,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-4 border-b border-white/20">
         <div className="flex items-center gap-2">
           <Printer className="h-6 w-6 text-primary" />
-          <span className="text-xl font-bold">PrintSprint</span>
+          <span className="text-xl font-bold">Chhapo</span>
         </div>
       </SidebarHeader>
       <SidebarContent>

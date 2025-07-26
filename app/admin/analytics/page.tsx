@@ -15,9 +15,10 @@ import {
   Cell,
   AreaChart,
   Area,
+  PieChart,
+  Pie
 } from "recharts"
 import { TrendingUp, DollarSign, Users, Package, Target } from "lucide-react"
-
 
 const revenueData = [
   { month: "Jan", revenue: 45000, orders: 120, customers: 89 },
@@ -31,14 +32,14 @@ const revenueData = [
   { month: "Sep", revenue: 75000, orders: 200, customers: 130 },
   { month: "Oct", revenue: 82000, orders: 220, customers: 140 },
   { month: "Nov", revenue: 78000, orders: 210, customers: 135 },
-  { month: "Dec", revenue: 85000, orders: 230, customers: 150 },
+  { month: "Dec", revenue: 85000, orders: 230, customers: 150 }
 ]
 
 const serviceData = [
   { name: "Basic Print", value: 45, revenue: 180000, color: "#8884d8" },
   { name: "Business Cards", value: 25, revenue: 125000, color: "#82ca9d" },
   { name: "Brochures", value: 20, revenue: 95000, color: "#ffc658" },
-  { name: "Gift Cards", value: 10, revenue: 48000, color: "#ff7300" },
+  { name: "Gift Cards", value: 10, revenue: 48000, color: "#ff7300" }
 ]
 
 const dailyOrdersData = [
@@ -48,7 +49,7 @@ const dailyOrdersData = [
   { day: "Thu", orders: 35, revenue: 4500 },
   { day: "Fri", orders: 42, revenue: 5400 },
   { day: "Sat", orders: 38, revenue: 4900 },
-  { day: "Sun", orders: 22, revenue: 2800 },
+  { day: "Sun", orders: 22, revenue: 2800 }
 ]
 
 const customerGrowthData = [
@@ -57,7 +58,7 @@ const customerGrowthData = [
   { month: "Mar", newCustomers: 48, totalCustomers: 550 },
   { month: "Apr", newCustomers: 61, totalCustomers: 611 },
   { month: "May", newCustomers: 55, totalCustomers: 666 },
-  { month: "Jun", newCustomers: 67, totalCustomers: 733 },
+  { month: "Jun", newCustomers: 67, totalCustomers: 733 }
 ]
 
 export default function AdminAnalyticsPage() {
@@ -89,65 +90,44 @@ export default function AdminAnalyticsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="glass-card border-0">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Revenue</p>
-                <p className="text-2xl font-bold">₹7,48,000</p>
-                <p className="text-xs text-green-600 mt-1">+15.3% from last period</p>
+        {[{
+          title: "Total Revenue",
+          value: "₹7,48,000",
+          sub: "+15.3% from last period",
+          icon: <DollarSign className="h-6 w-6 text-green-600" />,
+          bg: "bg-green-100"
+        }, {
+          title: "Total Orders",
+          value: "2,025",
+          sub: "+12.8% from last period",
+          icon: <Package className="h-6 w-6 text-blue-600" />,
+          bg: "bg-blue-100"
+        }, {
+          title: "New Customers",
+          value: "328",
+          sub: "+8.2% from last period",
+          icon: <Users className="h-6 w-6 text-purple-600" />,
+          bg: "bg-purple-100"
+        }, {
+          title: "Avg Order Value",
+          value: "₹369",
+          sub: "+2.1% from last period",
+          icon: <Target className="h-6 w-6 text-orange-600" />,
+          bg: "bg-orange-100"
+        }].map((stat, idx) => (
+          <Card key={idx} className="glass-card border-0">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
+                  <p className="text-2xl font-bold">{stat.value}</p>
+                  <p className="text-xs text-green-600 mt-1">{stat.sub}</p>
+                </div>
+                <div className={`p-3 rounded-full ${stat.bg}`}>{stat.icon}</div>
               </div>
-              <div className="p-3 bg-green-100 rounded-full">
-                <DollarSign className="h-6 w-6 text-green-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="glass-card border-0">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Orders</p>
-                <p className="text-2xl font-bold">2,025</p>
-                <p className="text-xs text-green-600 mt-1">+12.8% from last period</p>
-              </div>
-              <div className="p-3 bg-blue-100 rounded-full">
-                <Package className="h-6 w-6 text-blue-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="glass-card border-0">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">New Customers</p>
-                <p className="text-2xl font-bold">328</p>
-                <p className="text-xs text-green-600 mt-1">+8.2% from last period</p>
-              </div>
-              <div className="p-3 bg-purple-100 rounded-full">
-                <Users className="h-6 w-6 text-purple-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="glass-card border-0">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Avg Order Value</p>
-                <p className="text-2xl font-bold">₹369</p>
-                <p className="text-xs text-green-600 mt-1">+2.1% from last period</p>
-              </div>
-              <div className="p-3 bg-orange-100 rounded-full">
-                <Target className="h-6 w-6 text-orange-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -161,13 +141,13 @@ export default function AdminAnalyticsPage() {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
                 <YAxis />
-                <Tooltip formatter={(value) => [`₹${value.toLocaleString()}`, \"Revenue\"]]} />\
-                <Area type=\"monotone\" dataKey=\"revenue\" stroke=\"#8884d8\" fill=\"#8884d8\" fillOpacity={0.6} />\
-              </AreaChart>\
-            </ResponsiveContainer>\
-          </CardContent>\
+                <Tooltip formatter={(value: number) => [`₹${value.toLocaleString()}`, "Revenue"]} />
+                <Area type="monotone" dataKey="revenue" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </CardContent>
         </Card>
-\
+
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle>Orders Trend</CardTitle>
@@ -178,10 +158,10 @@ export default function AdminAnalyticsPage() {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
                 <YAxis />
-                <Tooltip formatter={(value) => [value, "Orders"]} />
+                <Tooltip formatter={(value: number) => [value, "Orders"]} />
                 <Line type="monotone" dataKey="orders" stroke="#82ca9d" strokeWidth={2} />
               </LineChart>
-            </ResponsiveContainer>\
+            </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>
@@ -198,24 +178,28 @@ export default function AdminAnalyticsPage() {
                   data={serviceData}
                   cx="50%"
                   cy="50%"
-                  labelLine={false}\
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}\
+                  labelLine={false}
+                  label={(props) => {
+                    const { name, percent } = props;
+                    return `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`;
+                  }}
+                  
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="revenue"
-                >\
+                >
                   {serviceData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}\
-                </Pie>\
-                <Tooltip formatter={(value) => [`₹${value.toLocaleString()}`, "Revenue"]} />\
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value: number) => [`₹${value.toLocaleString()}`, "Revenue"]} />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
         <Card className="glass-card border-0">
-          <CardHeader>\
+          <CardHeader>
             <CardTitle>Daily Performance (This Week)</CardTitle>
           </CardHeader>
           <CardContent>
@@ -232,7 +216,6 @@ export default function AdminAnalyticsPage() {
         </Card>
       </div>
 
-      {/* Customer Growth and Service Performance */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="glass-card border-0">
           <CardHeader>
@@ -275,7 +258,6 @@ export default function AdminAnalyticsPage() {
         </Card>
       </div>
 
-      {/* Performance Insights */}
       <Card className="glass-card border-0">
         <CardHeader>
           <CardTitle>Performance Insights</CardTitle>
@@ -307,5 +289,5 @@ export default function AdminAnalyticsPage() {
         </CardContent>
       </Card>
     </div>
-  )\
+  )
 }
