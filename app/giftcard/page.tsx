@@ -20,10 +20,9 @@ export default function GiftCardPage() {
   const [orderId, setOrderId] = useState("")
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [showTrackDialog, setShowTrackDialog] = useState(false)
-
   const [walletBalance, setWalletBalance] = useState(1000)
 
-  const templates = {
+  const templates: Record<string, string[]> = {
     birthday: ["/birthday/bd1.jpeg", "/birthday/bd2.jpeg", "/birthday/bd3.jpeg", "/birthday/bd4.jpeg"],
     love: ["/love/l1.jpg", "/love/l2.jpg", "/love/l3.jpg", "/love/l4.jpg"],
     black: ["/black/bl1.jpg", "/black/bl2.jpg", "/black/bl3.jpg", "/black/bl4.jpg"],
@@ -31,7 +30,7 @@ export default function GiftCardPage() {
     blue: ["/blue/b1.jpg", "/blue/b2.jpg", "/blue/b3.jpg", "/blue/b4.jpg"],
   }
 
-  const prices = {
+  const prices: Record<string, number> = {
     birthday: 30,
     love: 40,
     black: 35,
@@ -44,15 +43,16 @@ export default function GiftCardPage() {
   useEffect(() => {
     const stored = localStorage.getItem("walletBalance")
     if (stored) {
-      setWalletBalance(parseInt(stored))
+      setWalletBalance(parseInt(stored, 10))
     } else {
       localStorage.setItem("walletBalance", "1000")
     }
   }, [])
 
   const getTotalPrice = () => {
-    const base = prices[occasion] || 50
-    const cardTotal = base * parseInt(quantity || "0")
+    const base = prices[occasion] ?? 50
+    const qty = parseInt(quantity || "0", 10)
+    const cardTotal = base * qty
     return cardTotal + deliveryCharge
   }
 
@@ -91,6 +91,7 @@ export default function GiftCardPage() {
 
   return (
     <div className="max-w-3xl mx-auto mt-10 space-y-6">
+      {/* Wallet Balance */}
       <Card className="glass-card border-0">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -109,6 +110,7 @@ export default function GiftCardPage() {
         </CardContent>
       </Card>
 
+      {/* Gift Card Form */}
       <Card className="border-green-200 bg-green-50 dark:bg-white/5 dark:border-white/10">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
@@ -117,13 +119,15 @@ export default function GiftCardPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-
           <div className="space-y-2">
             <Label>Occasion</Label>
-            <Select onValueChange={(value) => {
-              setOccasion(value)
-              setSelectedTemplate("")
-            }}>
+            <Select
+              value={occasion}
+              onValueChange={(value) => {
+                setOccasion(value)
+                setSelectedTemplate("")
+              }}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select Occasion" />
               </SelectTrigger>
@@ -139,7 +143,10 @@ export default function GiftCardPage() {
 
           <div className="space-y-2">
             <Label>Select Card Size</Label>
-            <Select onValueChange={(value) => setSize(value)}>
+            <Select
+              value={size}
+              onValueChange={(value) => setSize(value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Choose size" />
               </SelectTrigger>
@@ -151,10 +158,12 @@ export default function GiftCardPage() {
             </Select>
           </div>
 
-          {/* Quantity */}
           <div className="space-y-2">
             <Label>Select Quantity</Label>
-            <Select onValueChange={(value) => setQuantity(value)}>
+            <Select
+              value={quantity}
+              onValueChange={(value) => setQuantity(value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Choose quantity" />
               </SelectTrigger>
@@ -176,10 +185,9 @@ export default function GiftCardPage() {
             />
           </div>
 
-          {/* Templates */}
           {occasion && (
             <div className="space-y-2">
-              <Label>Choose a template</Label>
+              <Label>Choose a Template</Label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {templates[occasion].map((src, idx) => (
                   <img
@@ -187,21 +195,23 @@ export default function GiftCardPage() {
                     src={src}
                     onClick={() => setSelectedTemplate(src)}
                     className={`cursor-pointer border-2 rounded-lg ${
-                      selectedTemplate === src ? "border-green-500" : "border-transparent"
+                      selectedTemplate === src
+                        ? "border-green-500"
+                        : "border-transparent"
                     }`}
                     style={{
                       width:
                         size === "standard"
-                          ? "140px"
+                          ? 140
                           : size === "square"
-                          ? "120px"
-                          : "100px",
+                          ? 120
+                          : 100,
                       height:
                         size === "standard"
-                          ? "200px"
+                          ? 200
                           : size === "square"
-                          ? "120px"
-                          : "130px",
+                          ? 120
+                          : 130,
                       objectFit: "cover",
                     }}
                   />
@@ -214,7 +224,7 @@ export default function GiftCardPage() {
             <div className="space-y-2">
               <Label>Price Details</Label>
               <div className="text-sm space-y-1">
-                <p>Card Cost: ₹{(prices[occasion] || 0) * parseInt(quantity || "0")}</p>
+                <p>Card Cost: ₹{(prices[occasion] ?? 0) * parseInt(quantity || "0", 10)}</p>
                 <p>Delivery Charge: ₹{deliveryCharge}</p>
                 <p className="font-semibold text-green-600">Total: ₹{getTotalPrice()}</p>
               </div>

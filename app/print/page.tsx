@@ -191,7 +191,7 @@ export default function PrintPage() {
 
               <div className="space-y-3">
                 <Label>Orientation</Label>
-                <RadioGroup value={orientation} onValueChange={(v) => setOrientation(v)}>
+                <RadioGroup value={orientation} onValueChange={(v) => setOrientation(v as "portrait" | "landscape")}>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="portrait" id="portrait" />
                     <Label htmlFor="portrait">Portrait</Label>
@@ -205,7 +205,7 @@ export default function PrintPage() {
 
               <div className="space-y-3">
                 <Label>Paper Type</Label>
-                <RadioGroup value={paperType} onValueChange={(v) => setPaperType(v)}>
+                <RadioGroup value={paperType} onValueChange={(v) => setPaperType(v as "normal" | "glossy")}>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="normal" id="normal" />
                     <Label htmlFor="normal">Normal</Label>
@@ -219,7 +219,7 @@ export default function PrintPage() {
 
               <div className="space-y-3">
                 <Label>Color</Label>
-                <RadioGroup value={color} onValueChange={(v) => setColor(v)}>
+                <RadioGroup value={color} onValueChange={(v) => setColor(v as "bw"|"color")}>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="bw" id="bw" />
                     <Label htmlFor="bw">Black & White</Label>
@@ -233,7 +233,7 @@ export default function PrintPage() {
 
               <div className="space-y-3">
                 <Label>Print Sides</Label>
-                <RadioGroup value={sides} onValueChange={(v) => setSides(v)}>
+                <RadioGroup value={sides} onValueChange={(v) => setSides(v as "front"|"both")}>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="front" id="front" />
                     <Label htmlFor="front">Front Only</Label>
@@ -247,7 +247,7 @@ export default function PrintPage() {
 
               <div className="space-y-3">
                 <Label>Binding</Label>
-                <Select value={binding} onValueChange={(v) => setBinding(v)}>
+                <Select value={binding} onValueChange={(v) => setBinding(v as "none" | "stapled" | "spiral") }>
                   <SelectTrigger className="glass border-white/20">
                     <SelectValue />
                   </SelectTrigger>
