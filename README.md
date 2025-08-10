@@ -32,6 +32,6 @@ Welcome to **Chhapo**, a modern print-on-demand platform where creativity meets 
 ## 🤝 Contributing  
 We welcome contributions! Submit issues, suggest features, or create pull requests to make Chhapo even better.  
 
-🔗 **Live Demo:** chhapo.vercel.app
+🔗 **Live Demo:** *chhapo.vercel.app*
 
 Happy Printing! 🖨✨  
